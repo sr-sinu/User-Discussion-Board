@@ -13,6 +13,7 @@
             <th scope="col">Sr. No.:</th>
             <th scope="col">Answers:</th>
             <th scope="col">Answer Description</th>
+            <th scope="col">Answer Code</th>
         </tr>
     </thead>
         <tbody>
@@ -23,14 +24,17 @@
                 Created By : {{s.answered_by }} </br>
                 Created On - {{ s.created_date }}</td>
             <td style="text-align: center">
-{#            <form method="post" style="height: 10px; width: 100px; margin: auto; padding: 10px;" class=" border border-0" action="{% url 'up_ans' %}">#}
-{#            {% csrf_token %}#}
-{#                <input name="a_id" type="hidden" value="{{ s.answer_id }}"/>#}
-{#                <button class="btn btn-success" name="button" type="submit" value="update">Update</button>#}
-{#            </form>#}
-            {{ s.answer_desc }}
+            {{ s.answer_desc }}</td>
+            <td>{{ s.code_fld }}</td>
+            <td>
+                <form method="post" style="height: 10px; width: 100px; margin: auto; padding: 10px;" 
+                    class=" border border-0" action="{% url 'up_ans' %}">
+                    {% csrf_token %}
+                    <input name="a_id" type="hidden" value="{{ s.answer_id }}"/>
+                    <button class="btn btn-success" name="button" type="submit" value="update">Update</button>
+                </form>
+            </td>
             {% endfor %}
-        </td>
         </tr>
     </tbody>
 </table>

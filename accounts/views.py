@@ -77,23 +77,34 @@ class Reply_question(LoginRequiredMixin, View):
 class Update_answer(LoginRequiredMixin, View):
     def post(self, request):
         forms = CreateAnswerForm(request.POST)
-        if forms.is_valid():
-            ans = forms.cleaned_data['Aname']
-            desc = forms.cleaned_data['Adesc']
-            code = forms.cleaned_data['Acode']
-            qid = request.POST.get('q_id')
-            auser = request.user.username
-            rec = Answers.objects.create(answer=ans, answer_desc=desc, code_fld=code, question_id=qid,
-                                         answered_by=auser)
-            rec.save()
-            qobj = Questions.objects.get(question_id=qid)
-            anscnt = qobj.answersCount
-            anscnt += 1
-            Questions.objects.filter(question_id=qid).update(answersCount=anscnt)
-            obj = Answers.objects.filter(question_id=qid)
-            return render(request, 'showanswer.html', {'ans': obj})
-            # return render(request, "ans&upd_question.html", {'qObj': qobj, "form": CreateAnswerForm(), 'msg': 'Answer Created succc.....'})
+        ans_id = request.POST.get('a_id')
+        if ans_id:
+            if forms.is_valid():
+                ans = forms.cleaned_data['Aname']
+                desc = forms.cleaned_data['Adesc']
+                code = forms.cleaned_data['Acode']
+                auser = request.user.username
+                qid = request.POST.get('q_id')
+                rec = Answers.objects.filter(answer_id=ans_id).update(answer=ans, answer_desc=desc, code_fld=code,
+                                            answered_by=auser)
+                obj = Answers.objects.filter(question_id=qid)
+                return render(request, 'showanswer.html', {'ans': obj})
         else:
+            if forms.is_valid():
+                ans = forms.cleaned_data['Aname']
+                desc = forms.cleaned_data['Adesc']
+                code = forms.cleaned_data['Acode']
+                qid = request.POST.get('q_id')
+                auser = request.user.username
+                rec = Answers.objects.create(answer=ans, answer_desc=desc, code_fld=code, question_id=qid,
+                                            answered_by=auser)
+                rec.save()
+                qobj = Questions.objects.get(question_id=qid)
+                anscnt = qobj.answersCount
+                anscnt += 1
+                Questions.objects.filter(question_id=qid).update(answersCount=anscnt)
+                obj = Answers.objects.filter(question_id=qid)
+                return render(request, 'showanswer.html', {'ans': obj})
             return render(request, "ans&upd_question.html", {"form": forms, 'msg': 'something is wrong'})
 
 
