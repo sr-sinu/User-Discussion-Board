@@ -1,4 +1,5 @@
-from django.urls import path, re_path
+'''Import module here'''
+from django.urls import path
 from .views import SignUpView, Question_create, all_question, my_question, Reply_question,\
     Update_answer, ShowAns,updateAns,login_view,logout_view
 

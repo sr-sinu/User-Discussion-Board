@@ -1,8 +1,10 @@
+#import required modules
+from datetime import datetime
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from datetime import datetime
 
 
+#User module
 class CustomUser(AbstractUser):
     dob = models.DateTimeField(blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True)
@@ -15,6 +17,7 @@ class CustomUser(AbstractUser):
         return self.username
 
 
+#Question Module
 class Questions(models.Model):
     question_id = models.AutoField(primary_key=True)
     question = models.CharField(max_length=100)
@@ -25,6 +28,7 @@ class Questions(models.Model):
     answersCount = models.IntegerField(default=0)
 
 
+#Answer Module
 class Answers(models.Model):
     answer_id = models.AutoField(primary_key=True)
     answer = models.CharField(max_length=100)
